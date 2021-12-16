@@ -40,9 +40,9 @@ def main():
 
     # Used to manage how fast the screen updates
     clock = pygame.time.Clock()
-
     # -------- Main Program Loop -----------
     while not done:
+        print(player.absolute.x,player.rect.y)
         for event in pygame.event.get(): # User did something
             if event.type == pygame.QUIT: # If user clicked close
                 done = True # Flag that we are done so we exit this loop
@@ -73,11 +73,14 @@ def main():
             player.rect.x = 500
             current_level.shift_world(-diff)
 
+
+
         # If the player gets near the left side, shift the world right (+x)
         if player.rect.x <= 120:
             diff = 120 - player.rect.x
             player.rect.x = 120
             current_level.shift_world(diff)
+       
 
         # If the player gets to the end of the level, go to the next level
         current_position = player.rect.x + current_level.world_shift

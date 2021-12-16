@@ -1,6 +1,6 @@
 import pygame
 
-def getSprites(direccion,scale=3):
+def getSprites(direccion,scale=2.5):
     sprites = []
     n=0
     while True:

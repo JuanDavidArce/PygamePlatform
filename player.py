@@ -44,10 +44,9 @@ class Player(pygame.sprite.Sprite):
         self.walking_frames_l = ANIMATIONS['Principal_Character']['Left']['Walk']
         # Set the image the player starts with
         self.image = self.walking_frames_r[0]
-
         # Set a referance to the image rect.
         self.rect = self.image.get_rect()
-
+        self.absolute =self.image.get_rect()
     def update(self):
         """ Move the player. """
         # Gravity
@@ -55,6 +54,7 @@ class Player(pygame.sprite.Sprite):
 
         # Move left/right
         self.rect.x += self.change_x
+        self.absolute.x+=self.change_x
         pos = self.rect.x + self.level.world_shift
         if self.direction == "R":
             frame = (pos // 30) % len(self.walking_frames_r)
@@ -104,6 +104,7 @@ class Player(pygame.sprite.Sprite):
         if self.rect.y >= constants.SCREEN_HEIGHT - self.rect.height and self.change_y >= 0:
             self.change_y = 0
             self.rect.y = constants.SCREEN_HEIGHT - self.rect.height
+            self.absolute.y = constants.SCREEN_HEIGHT - self.rect.height
 
     def jump(self):
         """ Called when user hits 'jump' button. """
@@ -112,8 +113,10 @@ class Player(pygame.sprite.Sprite):
         # Move down 2 pixels because it doesn't work well if we only move down 1
         # when working with a platform moving down.
         self.rect.y += 2
+        self.absolute.y+=2
         platform_hit_list = pygame.sprite.spritecollide(self, self.level.platform_list, False)
         self.rect.y -= 2
+        self.absolute.y-=2
 
         # If it is ok to jump, set our speed upwards
         if len(platform_hit_list) > 0 or self.rect.bottom >= constants.SCREEN_HEIGHT:

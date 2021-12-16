@@ -1,6 +1,8 @@
 import pygame
+from animations import ANIMATIONS
 
 import constants
+from enemy import Enemy
 import platforms
 
 class Level():
@@ -58,6 +60,8 @@ class Level():
 
         for enemy in self.enemy_list:
             enemy.rect.x += shift_x
+            enemy.limit[0]+=shift_x
+            enemy.limit[1]+=shift_x
 
 # Create platforms for the level
 class Level_01(Level):
@@ -75,22 +79,22 @@ class Level_01(Level):
 
         # Array with type of platform, and x, y location of the platform.
         level = [ 
-                  [platforms.GRASS_LEFT, 500, 500],
-                  [platforms.GRASS_MIDDLE, 570, 500],
-                  [platforms.GRASS_RIGHT, 640, 500],
-                  [platforms.GRASS_LEFT, 800, 400],
-                  [platforms.GRASS_MIDDLE, 870, 400],
-                  [platforms.GRASS_RIGHT, 940, 400],
-                  [platforms.GRASS_LEFT, 1000, 500],
-                  [platforms.GRASS_MIDDLE, 1070, 500],
-                  [platforms.GRASS_RIGHT, 1140, 500],
+                  [platforms.STONE_PLATFORM_LEFT, 500, 500],
+                  [platforms.STONE_PLATFORM_MIDDLE, 570, 500],
+                  [platforms.STONE_PLATFORM_RIGHT, 640, 500],
+                  [platforms.STONE_PLATFORM_LEFT, 800, 400],
+                  [platforms.STONE_PLATFORM_MIDDLE, 870, 400],
+                  [platforms.STONE_PLATFORM_RIGHT, 940, 400],
+                  [platforms.STONE_PLATFORM_LEFT, 1000, 500],
+                  [platforms.STONE_PLATFORM_MIDDLE, 1070, 500],
+                  [platforms.STONE_PLATFORM_RIGHT, 1140, 500],
                   [platforms.STONE_PLATFORM_LEFT, 1120, 280],
                   [platforms.STONE_PLATFORM_MIDDLE, 1190, 280],
                   [platforms.STONE_PLATFORM_RIGHT, 1260, 280],
                  
                   ]
 
-        # level=[]
+        enemys=[Enemy(ANIMATIONS['Skeleton_Enemy'],'Left','Walk',-5,0,100,False,1214,175,'Skeleton_Enemy',[1100,1214,175,175])]
 
 
         # Go through the array above and add platforms
@@ -100,6 +104,10 @@ class Level_01(Level):
             block.rect.y = platform[2]
             block.player = self.player
             self.platform_list.add(block)
+        for enemy in enemys:
+            self.enemy_list.add(enemy)
+
+
 
         # Add a custom moving platform
         block = platforms.MovingPlatform(platforms.STONE_PLATFORM_MIDDLE)
