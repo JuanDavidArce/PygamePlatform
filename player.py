@@ -8,7 +8,7 @@ import constants
 import animations
 
 from platforms import MovingPlatform
-from sprites import ANIMATIONS
+from animations import *
 from spritesheet_functions import SpriteSheet
 
 
@@ -42,53 +42,11 @@ class Player(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.walking_frames_r = ANIMATIONS['Principal_Character']['Right']['Walk']
         self.walking_frames_l = ANIMATIONS['Principal_Character']['Left']['Walk']
-        # sprite_sheet = SpriteSheet("p1_walk.png")
-        # # Load all the right facing images into a list
-        # image = sprite_sheet.get_image(0, 0, 66, 90)
-        # self.walking_frames_r.append(image)
-        # image = sprite_sheet.get_image(66, 0, 66, 90)
-        # self.walking_frames_r.append(image)
-        # image = sprite_sheet.get_image(132, 0, 67, 90)
-        # self.walking_frames_r.append(image)
-        # image = sprite_sheet.get_image(0, 93, 66, 90)
-        # self.walking_frames_r.append(image)
-        # image = sprite_sheet.get_image(66, 93, 66, 90)
-        # self.walking_frames_r.append(image)
-        # image = sprite_sheet.get_image(132, 93, 72, 90)
-        # self.walking_frames_r.append(image)
-        # image = sprite_sheet.get_image(0, 186, 70, 90)
-        # self.walking_frames_r.append(image)
-
-        # # Load all the right facing images, then flip them
-        # # to face left.
-        # image = sprite_sheet.get_image(0, 0, 66, 90)
-        # image = pygame.transform.flip(image, True, False)
-        # self.walking_frames_l.append(image)
-        # image = sprite_sheet.get_image(66, 0, 66, 90)
-        # image = pygame.transform.flip(image, True, False)
-        # self.walking_frames_l.append(image)
-        # image = sprite_sheet.get_image(132, 0, 67, 90)
-        # image = pygame.transform.flip(image, True, False)
-        # self.walking_frames_l.append(image)
-        # image = sprite_sheet.get_image(0, 93, 66, 90)
-        # image = pygame.transform.flip(image, True, False)
-        # self.walking_frames_l.append(image)
-        # image = sprite_sheet.get_image(66, 93, 66, 90)
-        # image = pygame.transform.flip(image, True, False)
-        # self.walking_frames_l.append(image)
-        # image = sprite_sheet.get_image(132, 93, 72, 90)
-        # image = pygame.transform.flip(image, True, False)
-        # self.walking_frames_l.append(image)
-        # image = sprite_sheet.get_image(0, 186, 70, 90)
-        # image = pygame.transform.flip(image, True, False)
-        # self.walking_frames_l.append(image)
-
         # Set the image the player starts with
         self.image = self.walking_frames_r[0]
-
         # Set a referance to the image rect.
         self.rect = self.image.get_rect()
-
+        self.absolute =self.image.get_rect()
     def update(self):
         """ Move the player. """
         # Gravity
@@ -96,6 +54,7 @@ class Player(pygame.sprite.Sprite):
 
         # Move left/right
         self.rect.x += self.change_x
+        self.absolute.x+=self.change_x
         pos = self.rect.x + self.level.world_shift
         if self.direction == "R":
             frame = (pos // 30) % len(self.walking_frames_r)
@@ -145,6 +104,7 @@ class Player(pygame.sprite.Sprite):
         if self.rect.y >= constants.SCREEN_HEIGHT - self.rect.height and self.change_y >= 0:
             self.change_y = 0
             self.rect.y = constants.SCREEN_HEIGHT - self.rect.height
+            self.absolute.y = constants.SCREEN_HEIGHT - self.rect.height
 
     def jump(self):
         """ Called when user hits 'jump' button. """
@@ -153,8 +113,10 @@ class Player(pygame.sprite.Sprite):
         # Move down 2 pixels because it doesn't work well if we only move down 1
         # when working with a platform moving down.
         self.rect.y += 2
+        self.absolute.y+=2
         platform_hit_list = pygame.sprite.spritecollide(self, self.level.platform_list, False)
         self.rect.y -= 2
+        self.absolute.y-=2
 
         # If it is ok to jump, set our speed upwards
         if len(platform_hit_list) > 0 or self.rect.bottom >= constants.SCREEN_HEIGHT:

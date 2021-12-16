@@ -32,7 +32,7 @@ def main():
     player.level = current_level
 
     player.rect.x = 340
-    player.rect.y = constants.SCREEN_HEIGHT - player.rect.height
+    player.rect.y = constants.SCREEN_HEIGHT - player.rect.height*3 
     active_sprite_list.add(player)
 
     #Loop until the user clicks the close button.
@@ -40,7 +40,6 @@ def main():
 
     # Used to manage how fast the screen updates
     clock = pygame.time.Clock()
-
     # -------- Main Program Loop -----------
     while not done:
         for event in pygame.event.get(): # User did something
@@ -73,11 +72,14 @@ def main():
             player.rect.x = 500
             current_level.shift_world(-diff)
 
+
+
         # If the player gets near the left side, shift the world right (+x)
         if player.rect.x <= 120:
             diff = 120 - player.rect.x
             player.rect.x = 120
             current_level.shift_world(diff)
+       
 
         # If the player gets to the end of the level, go to the next level
         current_position = player.rect.x + current_level.world_shift
