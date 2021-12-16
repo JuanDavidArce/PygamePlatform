@@ -78,6 +78,15 @@ class Level_01(Level):
         self.level_limit = -2500
 
         # Array with type of platform, and x, y location of the platform.
+        base = []
+
+        for i in range(0,11):
+            base.append([platforms.STONE_PLATFORM_LEFT, 0+i*70, constants.SCREEN_HEIGHT - 40])
+        
+        for i in range(11, 30):
+            base.append([platforms.lava, 0+i*68, constants.SCREEN_HEIGHT - 40])
+
+    
         level = [ 
                   [platforms.STONE_PLATFORM_LEFT, 500, 500],
                   [platforms.STONE_PLATFORM_MIDDLE, 570, 500],
@@ -85,15 +94,12 @@ class Level_01(Level):
                   [platforms.STONE_PLATFORM_LEFT, 800, 400],
                   [platforms.STONE_PLATFORM_MIDDLE, 870, 400],
                   [platforms.STONE_PLATFORM_RIGHT, 940, 400],
-                  [platforms.STONE_PLATFORM_LEFT, 1000, 500],
-                  [platforms.STONE_PLATFORM_MIDDLE, 1070, 500],
-                  [platforms.STONE_PLATFORM_RIGHT, 1140, 500],
                   [platforms.STONE_PLATFORM_LEFT, 1120, 280],
                   [platforms.STONE_PLATFORM_MIDDLE, 1190, 280],
-                  [platforms.STONE_PLATFORM_RIGHT, 1260, 280],
-                 
-                  ]
+                  [platforms.STONE_PLATFORM_MIDDLE, 1260, 280],
+                ]
 
+        level = base + level
         enemys=[Enemy(ANIMATIONS['Skeleton_Enemy'],'Left','Walk',-5,0,100,False,1214,175,'Skeleton_Enemy',[1100,1214,175,175])]
 
 
