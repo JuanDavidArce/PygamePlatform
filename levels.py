@@ -74,7 +74,8 @@ class Level_01(Level):
         self.level_limit = -2500
 
         # Array with type of platform, and x, y location of the platform.
-        level = [ [platforms.GRASS_LEFT, 500, 500],
+        level = [ 
+                  [platforms.GRASS_LEFT, 500, 500],
                   [platforms.GRASS_MIDDLE, 570, 500],
                   [platforms.GRASS_RIGHT, 640, 500],
                   [platforms.GRASS_LEFT, 800, 400],
@@ -88,6 +89,8 @@ class Level_01(Level):
                   [platforms.STONE_PLATFORM_RIGHT, 1260, 280],
                  
                   ]
+
+        # level=[]
 
 
         # Go through the array above and add platforms
