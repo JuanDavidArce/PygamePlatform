@@ -8,6 +8,7 @@ import constants
 
 from platforms import MovingPlatform
 from spritesheet_functions import SpriteSheet
+from animations import *
 
 class Player(pygame.sprite.Sprite):
     """ This class represents the bar at the bottom that the player
@@ -35,7 +36,8 @@ class Player(pygame.sprite.Sprite):
 
         # Call the parent's constructor
         pygame.sprite.Sprite.__init__(self)
-
+        # self.walking_frames_r = SPRITES['Principal_Character']['Right']['Walk']
+        # self.walking_frames_l = SPRITES['Principal_Character']['Left']['Walk']
         sprite_sheet = SpriteSheet("p1_walk.png")
         # Load all the right facing images into a list
         image = sprite_sheet.get_image(0, 0, 66, 90)
