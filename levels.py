@@ -96,7 +96,7 @@ class Level_01(Level):
                   [platforms.STONE_PLATFORM_RIGHT, 940, 400],
                   [platforms.STONE_PLATFORM_LEFT, 1120, 280],
                   [platforms.STONE_PLATFORM_MIDDLE, 1190, 280],
-                  [platforms.lava, 1260, 280],
+                  [platforms.STONE_PLATFORM_MIDDLE, 1260, 280],
                 ]
 
         level = base + level

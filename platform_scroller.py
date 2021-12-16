@@ -53,12 +53,15 @@ def main():
                     player.go_right()
                 if event.key == pygame.K_UP or event.key == pygame.K_w:
                     player.jump()
+                if event.key ==pygame.K_k:
+                    player.attack()
 
             if event.type == pygame.KEYUP:
                 if (event.key == pygame.K_LEFT or event.key == pygame.K_a) and player.change_x < 0:
                     player.stop()
                 if (event.key == pygame.K_RIGHT or event.key == pygame.K_d) and player.change_x > 0:
                     player.stop()
+                
 
         # Update the player.
         active_sprite_list.update()
@@ -89,6 +92,15 @@ def main():
                 current_level_no += 1
                 current_level = level_list[current_level_no]
                 player.level = current_level
+
+        #If we are attacking
+        closeEnemies= pygame.sprite.spritecollide(player,current_level.enemy_list, False)
+        for enemy in closeEnemies:
+            if player.attacking:
+                enemy.healt-=2
+            print(enemy.healt)
+            if enemy.healt<=0:
+                current_level.enemy_list.remove(enemy)
 
         # ALL CODE TO DRAW SHOULD GO BELOW THIS COMMENT
         current_level.draw(screen)
