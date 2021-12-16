@@ -1,11 +1,10 @@
 import pygame
 
-def getSprites(direccion,scale=1.5):
+def getSprites(direccion,scale=20):
     sprites = []
     n=0
     while True:
         try:
-            print('Loading : ',f'{direccion}/{n}.png')
             actualSprite=pygame.image.load(f'{direccion}/{n}.png')
             size = actualSprite.get_size()
             scaleSprite = pygame.transform.scale(actualSprite, (int(size[0]*scale), int(size[1]*scale)))
@@ -14,7 +13,7 @@ def getSprites(direccion,scale=1.5):
         except FileNotFoundError:
             return sprites
 
-character = {
+ANIMATIONS = {
     'Magic_Book':getSprites('Magic_Book'),
     'Knife':getSprites('Knife'),
     'Beer':getSprites('Beer'),

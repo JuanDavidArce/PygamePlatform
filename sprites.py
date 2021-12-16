@@ -1,16 +1,3 @@
-"""
-Global constants
-"""
-from animations import *
-# Colors
-BLACK    = (   0,   0,   0) 
-WHITE    = ( 255, 255, 255) 
-BLUE     = (   0,   0, 255)
-
-# Screen dimensions
-SCREEN_WIDTH  = 800
-SCREEN_HEIGHT = 600
-
 import pygame
 
 def getSprites(direccion,scale=1.5):
@@ -116,5 +103,6 @@ ANIMATIONS = {
     },
 }
 
-
+def getAnimations(sprite,direction,action):
+    return ANIMATIONS[sprite][direction][action]
 

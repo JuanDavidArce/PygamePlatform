@@ -8,6 +8,7 @@ import constants
 import animations
 
 from platforms import MovingPlatform
+from sprites import ANIMATIONS
 from spritesheet_functions import SpriteSheet
 
 
@@ -39,8 +40,8 @@ class Player(pygame.sprite.Sprite):
 
         # Call the parent's constructor
         pygame.sprite.Sprite.__init__(self)
-        self.walking_frames_r = animations.getAnimations('Principal_Character','Right','Walk')
-        self.walking_frames_l = animations.getAnimations('Principal_Character','Left','Walk')
+        self.walking_frames_r = ANIMATIONS['Principal_Character']['Right']['Walk']
+        self.walking_frames_l = ANIMATIONS['Principal_Character']['Left']['Walk']
         # sprite_sheet = SpriteSheet("p1_walk.png")
         # # Load all the right facing images into a list
         # image = sprite_sheet.get_image(0, 0, 66, 90)
