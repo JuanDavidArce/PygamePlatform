@@ -28,7 +28,7 @@ import pygame
 
 import constants
 import levels
-
+from animations import *
 from player import Player
 
 def main():
