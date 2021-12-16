@@ -42,24 +42,26 @@ def main():
     clock = pygame.time.Clock()
     # -------- Main Program Loop -----------
     while not done:
-        print(player.absolute.x,player.rect.y)
         for event in pygame.event.get(): # User did something
             if event.type == pygame.QUIT: # If user clicked close
                 done = True # Flag that we are done so we exit this loop
 
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT:
+                if event.key == pygame.K_a:
                     player.go_left()
-                if event.key == pygame.K_RIGHT:
+                if event.key == pygame.K_d:
                     player.go_right()
-                if event.key == pygame.K_UP:
+                if event.key == pygame.K_w:
                     player.jump()
+                if event.key ==pygame.K_k:
+                    player.attack()
 
             if event.type == pygame.KEYUP:
-                if event.key == pygame.K_LEFT and player.change_x < 0:
+                if event.key == pygame.K_a and player.change_x < 0:
                     player.stop()
-                if event.key == pygame.K_RIGHT and player.change_x > 0:
+                if event.key == pygame.K_d and player.change_x > 0:
                     player.stop()
+                
 
         # Update the player.
         active_sprite_list.update()
@@ -90,6 +92,15 @@ def main():
                 current_level_no += 1
                 current_level = level_list[current_level_no]
                 player.level = current_level
+
+        #If we are attacking
+        closeEnemies= pygame.sprite.spritecollide(player,current_level.enemy_list, False)
+        for enemy in closeEnemies:
+            if player.attacking:
+                enemy.healt-=2
+            print(enemy.healt)
+            if enemy.healt<=0:
+                current_level.enemy_list.remove(enemy)
 
         # ALL CODE TO DRAW SHOULD GO BELOW THIS COMMENT
         current_level.draw(screen)

@@ -42,26 +42,43 @@ class Player(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.walking_frames_r = ANIMATIONS['Principal_Character']['Right']['Walk']
         self.walking_frames_l = ANIMATIONS['Principal_Character']['Left']['Walk']
+        self.attack_frames_l = ANIMATIONS['Principal_Character']['Left']['Attack']
+        self.attack_frames_r = ANIMATIONS['Principal_Character']['Right']['Attack']
         # Set the image the player starts with
         self.image = self.walking_frames_r[0]
         # Set a referance to the image rect.
         self.rect = self.image.get_rect()
-        self.absolute =self.image.get_rect()
+        self.attacking =False
+        self.attackFrame=0
     def update(self):
         """ Move the player. """
+
+        #Manage Sprites attack
+        self.attackFrame+=1
+        if self.attackFrame==6:
+            self.attackFrame=0
+            self.attacking=False
+
+
         # Gravity
         self.calc_grav()
 
         # Move left/right
         self.rect.x += self.change_x
-        self.absolute.x+=self.change_x
         pos = self.rect.x + self.level.world_shift
+        
         if self.direction == "R":
-            frame = (pos // 30) % len(self.walking_frames_r)
-            self.image = self.walking_frames_r[frame]
+            if self.attacking:
+                self.image = self.attack_frames_r[self.attackFrame]
+            else:
+                frame = (pos // 30) % len(self.walking_frames_r)
+                self.image = self.walking_frames_r[frame]
         else:
-            frame = (pos // 30) % len(self.walking_frames_l)
-            self.image = self.walking_frames_l[frame]
+            if self.attacking:
+                self.image = self.attack_frames_l[self.attackFrame]
+            else:
+                frame = (pos // 30) % len(self.walking_frames_l)
+                self.image = self.walking_frames_l[frame]
 
         # See if we hit anything
         block_hit_list = pygame.sprite.spritecollide(self, self.level.platform_list, False)
@@ -104,7 +121,6 @@ class Player(pygame.sprite.Sprite):
         if self.rect.y >= constants.SCREEN_HEIGHT - self.rect.height and self.change_y >= 0:
             self.change_y = 0
             self.rect.y = constants.SCREEN_HEIGHT - self.rect.height
-            self.absolute.y = constants.SCREEN_HEIGHT - self.rect.height
 
     def jump(self):
         """ Called when user hits 'jump' button. """
@@ -113,23 +129,29 @@ class Player(pygame.sprite.Sprite):
         # Move down 2 pixels because it doesn't work well if we only move down 1
         # when working with a platform moving down.
         self.rect.y += 2
-        self.absolute.y+=2
         platform_hit_list = pygame.sprite.spritecollide(self, self.level.platform_list, False)
         self.rect.y -= 2
-        self.absolute.y-=2
 
         # If it is ok to jump, set our speed upwards
         if len(platform_hit_list) > 0 or self.rect.bottom >= constants.SCREEN_HEIGHT:
             self.change_y = -10
 
     # Player-controlled movement:
+
+    def attack(self):
+        """ Called when user hits 'atack' button"""
+        self.attackFrame=0
+        self.attacking=True
+
     def go_left(self):
         """ Called when the user hits the left arrow. """
+        self.attacking=False
         self.change_x = -6
         self.direction = "L"
 
     def go_right(self):
         """ Called when the user hits the right arrow. """
+        self.attacking=False
         self.change_x = 6
         self.direction = "R"
 
