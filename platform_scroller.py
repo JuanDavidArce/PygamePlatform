@@ -35,13 +35,16 @@ def main():
     player.rect.y = constants.SCREEN_HEIGHT - player.rect.height
     active_sprite_list.add(player)
 
+    healtIcon=pygame.image.load('heart.png')
+    
     #Loop until the user clicks the close button.
     done = False
+    gameOver= False
 
     # Used to manage how fast the screen updates
     clock = pygame.time.Clock()
     # -------- Main Program Loop -----------
-    while not done:
+    while not done and not gameOver:
         for event in pygame.event.get(): # User did something
             if event.type == pygame.QUIT: # If user clicked close
                 done = True # Flag that we are done so we exit this loop
@@ -93,20 +96,47 @@ def main():
                 current_level = level_list[current_level_no]
                 player.level = current_level
 
-        #If we are attacking
         closeEnemies= pygame.sprite.spritecollide(player,current_level.enemy_list, False)
+        #Update action of enemies
+        for enemy in current_level.enemy_list:
+            if enemy not in closeEnemies:
+                if enemy.direction =='Left':
+                    enemy.velx=-2
+                else:
+                    enemy.velx=2
+
+                if enemy.action!='Walk':
+                    enemy.actualPositionOfAnimation=0
+                    enemy.action='Walk'
+        #If we are attacking
+
         for enemy in closeEnemies:
+            enemy.action='Attack'
+            player.healt-=0.005
+            player.healt = int(player.healt)
+            enemy.velx=0
             if player.attacking:
                 enemy.healt-=2
-            print(enemy.healt)
             if enemy.healt<=0:
                 current_level.enemy_list.remove(enemy)
+        
+        #If we have died
+        if player.healt<=0:
+            player.healt=0
+            gameOver=True
+        
 
         # ALL CODE TO DRAW SHOULD GO BELOW THIS COMMENT
         current_level.draw(screen)
         active_sprite_list.draw(screen)
 
         # ALL CODE TO DRAW SHOULD GO ABOVE THIS COMMENT
+        screen.blit(healtIcon, [20,560])
+        myfont =pygame.font.Font('./Storytime.ttf',25)
+        healt=myfont.render(str(int(player.healt)), True , constants.WHITE)
+        screen.blit(healt, (50,560))
+        pygame.draw.rect(screen, constants.RED, pygame.Rect(20, 550, player.healt, 10))
+
 
         # Limit to 60 frames per second
         clock.tick(60)
@@ -116,6 +146,21 @@ def main():
 
     # Be IDLE friendly. If you forget this line, the program will 'hang'
     # on exit.
+
+    while not done:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                done=True
+
+        screen.fill(constants.BLACK)
+        Fuente =pygame.font.Font('./Storytime.ttf',30)
+        img_texto=Fuente.render('YOU LOSE', True, constants.WHITE)
+        screen.blit(img_texto,[200,300])
+        pygame.display.flip()
+        
+
+     
+    pygame.quit()
     pygame.quit()
 
 if __name__ == "__main__":

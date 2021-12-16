@@ -27,6 +27,7 @@ class Level():
             collide with the player. """
         self.platform_list = pygame.sprite.Group()
         self.enemy_list = pygame.sprite.Group()
+        self.doNotTouch = pygame.sprite.Group()
         self.player = player
 
     # Update everythign on this level
