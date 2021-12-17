@@ -50,11 +50,16 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.attacking =False
         self.attackFrame=0
+        self.healt=100
+        self.coutAttack=0
     def update(self):
         """ Move the player. """
 
         #Manage Sprites attack
-        self.attackFrame+=1
+        self.coutAttack+=1
+        if self.coutAttack%6==0:
+            self.coutAttack=0
+            self.attackFrame+=1
         if self.attackFrame==6:
             self.attackFrame=0
             self.attacking=False
@@ -66,7 +71,7 @@ class Player(pygame.sprite.Sprite):
         # Move left/right
         self.rect.x += self.change_x
         pos = self.rect.x + self.level.world_shift
-        
+
         if self.direction == "R":
             if self.attacking:
                 self.image = self.attack_frames_r[self.attackFrame]

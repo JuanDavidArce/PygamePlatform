@@ -27,6 +27,7 @@ class Level():
             collide with the player. """
         self.platform_list = pygame.sprite.Group()
         self.enemy_list = pygame.sprite.Group()
+        self.doNotTouch = pygame.sprite.Group()
         self.player = player
 
     # Update everythign on this level
@@ -131,8 +132,12 @@ class Level_01(Level):
                   [platforms.STONE_PLATFORM_RIGHT, 5940, 500],
                 ]
 
+        enemys=[
+            Enemy(ANIMATIONS['Skeleton_Enemy'],'Left','Walk',-5,0,100,False,1214,175,'Skeleton_Enemy',[1100,1214,175,175]),
+            Enemy(ANIMATIONS['Green_Enemy'],'Left','Attack',0,0,100,False,1214,175,'Green_Enemy',[1214,1214,175,175])
+
+            ]
         level = base + level
-        enemys=[Enemy(ANIMATIONS['Skeleton_Enemy'],'Left','Walk',-5,0,100,False,1214,175,'Skeleton_Enemy',[1100,1214,175,175])]
 
 
         # Go through the array above and add platforms
