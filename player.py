@@ -51,11 +51,15 @@ class Player(pygame.sprite.Sprite):
         self.attacking =False
         self.attackFrame=0
         self.healt=100
+        self.coutAttack=0
     def update(self):
         """ Move the player. """
 
         #Manage Sprites attack
-        self.attackFrame+=1
+        self.coutAttack+=1
+        if self.coutAttack%6==0:
+            self.coutAttack=0
+            self.attackFrame+=1
         if self.attackFrame==6:
             self.attackFrame=0
             self.attacking=False

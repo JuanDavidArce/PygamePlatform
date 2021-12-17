@@ -20,7 +20,7 @@ class Enemy(pygame.sprite.Sprite):
         self.counter=0
 
     def update(self):
-        if self.counter%10==0:
+        if self.counter%6==0:
             self.counter=0
             self.image = self.animations[self.direction][self.action][self.actualPositionOfAnimation]
             self.actualPositionOfAnimation+=1

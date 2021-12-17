@@ -1,6 +1,6 @@
 
 import pygame
-
+from bullet import *
 import constants
 import levels
 from animations import *
@@ -27,6 +27,8 @@ def main():
     # Set the current level
     current_level_no = 0
     current_level = level_list[current_level_no]
+
+    bullets = pygame.sprite.Group()
 
     active_sprite_list = pygame.sprite.Group()
     player.level = current_level
@@ -99,7 +101,7 @@ def main():
         closeEnemies= pygame.sprite.spritecollide(player,current_level.enemy_list, False)
         #Update action of enemies
         for enemy in current_level.enemy_list:
-            if enemy not in closeEnemies:
+            if enemy not in closeEnemies and enemy.name!='Green_Enemy':
                 if enemy.direction =='Left':
                     enemy.velx=-2
                 else:
@@ -112,25 +114,62 @@ def main():
 
         for enemy in closeEnemies:
             enemy.action='Attack'
-            player.healt-=0.005
-            player.healt = int(player.healt)
+            player.healt-=0.05
             enemy.velx=0
             if player.attacking:
-                enemy.healt-=2
+                enemy.healt-=1
             if enemy.healt<=0:
                 current_level.enemy_list.remove(enemy)
         
+        for enemy in current_level.enemy_list:
+            if enemy.name=='Green_Enemy':
+                if enemy.actualPositionOfAnimation ==10 or enemy.actualPositionOfAnimation==15:
+                    enemy.isAttacking=True
+        
+                if enemy.isAttacking and enemy.action=='Attack':
+                    velxBullet =0
+                    velyBullet=0
+                    #Right
+                    if enemy.direction=="Right":
+                        pos=[enemy.rect.x + 50 , enemy.rect.bottom-50]
+                        velxBullet=5
+
+                    #Lef
+                    if enemy.direction=="Left":
+                        pos=[enemy.rect.x  , enemy.rect.bottom-50]
+                        velxBullet=-5
+                        
+
+                    bullet=Bullet(pos,velxBullet,velyBullet) # WE CAN CONTROL THE DIRECTON WITH THE SECOND PARAMETER
+                    bullets.add(bullet)
+                    enemy.isAttacking=False
+
+        
+        #Check if a bullet shoot me
+        bulletsHitting=pygame.sprite.spritecollide(player, bullets, False)
+        for bullet in  bulletsHitting:
+            player.healt-=1
+            bullets.remove(bullet)
+
+
+        #Check if a bullet is out of screen
+        for bullet in bullets.copy():
+            if bullet.rect.x>800 or bullet.rect.x<=0 or bullet.rect.y>600 or bullet.rect.y<=0:
+                bullets.remove(bullet)      
+
+            
         #If we have died
         if player.healt<=0:
             player.healt=0
             gameOver=True
-        
 
         # ALL CODE TO DRAW SHOULD GO BELOW THIS COMMENT
         current_level.draw(screen)
         active_sprite_list.draw(screen)
+        bullets.draw(screen)
 
         # ALL CODE TO DRAW SHOULD GO ABOVE THIS COMMENT
+        bullets.update()
         screen.blit(healtIcon, [20,560])
         myfont =pygame.font.Font('./Storytime.ttf',25)
         healt=myfont.render(str(int(player.healt)), True , constants.WHITE)
@@ -154,7 +193,7 @@ def main():
 
         screen.fill(constants.BLACK)
         Fuente =pygame.font.Font('./Storytime.ttf',30)
-        img_texto=Fuente.render('YOU LOSE', True, constants.WHITE)
+        img_texto=Fuente.render('HAS PERDIDO PERROOOOOOOOOOOOOOOOO', True, constants.WHITE)
         screen.blit(img_texto,[200,300])
         pygame.display.flip()
         
