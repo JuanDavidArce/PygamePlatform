@@ -34,7 +34,7 @@ def main():
     player.level = current_level
 
     player.rect.x = 340
-    player.rect.y = constants.SCREEN_HEIGHT - player.rect.height
+    player.rect.y = constants.SCREEN_HEIGHT - player.rect.height*3 
     active_sprite_list.add(player)
 
     healtIcon=pygame.image.load('heart.png')
@@ -52,19 +52,19 @@ def main():
                 done = True # Flag that we are done so we exit this loop
 
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_a:
+                if event.key == pygame.K_LEFT or event.key == pygame.K_a:
                     player.go_left()
-                if event.key == pygame.K_d:
+                if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                     player.go_right()
-                if event.key == pygame.K_w:
+                if event.key == pygame.K_UP or event.key == pygame.K_w:
                     player.jump()
                 if event.key ==pygame.K_k:
                     player.attack()
 
             if event.type == pygame.KEYUP:
-                if event.key == pygame.K_a and player.change_x < 0:
+                if (event.key == pygame.K_LEFT or event.key == pygame.K_a) and player.change_x < 0:
                     player.stop()
-                if event.key == pygame.K_d and player.change_x > 0:
+                if (event.key == pygame.K_RIGHT or event.key == pygame.K_d) and player.change_x > 0:
                     player.stop()
                 
 
