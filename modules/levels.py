@@ -1,9 +1,9 @@
 import pygame
-from animations import ANIMATIONS
+from modules.animations import ANIMATIONS
 
-import constants
-from enemy import Enemy
-import platforms
+import modules.constants as constants
+from modules.enemy import Enemy
+import modules.platforms as platforms
 
 class Level():
     """ This is a generic super-class used to define a level.
@@ -79,7 +79,7 @@ class Level_01(Level):
         # Call the parent constructor
         Level.__init__(self, player)
 
-        self.background = pygame.image.load("background_01.png").convert()
+        self.background = pygame.image.load("img/background_01.png").convert()
         self.background.set_colorkey(constants.WHITE)
         self.level_limit = -2500
 
@@ -104,8 +104,9 @@ class Level_01(Level):
         for i in range(87,100):
             base.append([platforms.STONE_PLATFORM_LEFT, 0+i*70, constants.SCREEN_HEIGHT - 40])
         
-
-    
+        for i in range(10):
+            base.append([platforms.STONE_PLATFORM_LEFT,6880, constants.SCREEN_HEIGHT -  i*40 ])
+        
         level = [ 
                   [platforms.STONE_PLATFORM_LEFT, 500, 500],
                   [platforms.STONE_PLATFORM_MIDDLE, 570, 500],

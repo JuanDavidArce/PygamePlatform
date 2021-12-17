@@ -1,5 +1,5 @@
 import pygame
-import constants
+import modules.constants as constants
 class Bullet(pygame.sprite.Sprite):
 
     def __init__(self, pos,velx,vely, cl=constants.WHITE):

@@ -1,13 +1,12 @@
-
 import pygame
-from bullet import *
-import constants
-import levels
-from animations import *
-from player import Player
-from finalBoos import *
-from book import *
-from healt import *
+from modules.bullet import *
+import modules.constants as constants 
+import modules.levels as levels
+from modules.animations import *
+from modules.player import Player
+from modules.finalBoos import *
+from modules.book import *
+from modules.healt import *
 
 def main():
     """ Main Program """
@@ -37,14 +36,15 @@ def main():
 
     # Books group
     books =pygame.sprite.Group()
-    books.add(Magic_Book((300,500),ANIMATIONS['Magic_Book'],'Llega al final y derrota el jefe del mal'))
+    books.add(Magic_Book((570,445),ANIMATIONS['Magic_Book'],'LLEGA AL FINAL Y ELIMINA EL JEFE DEL MAL'))
+    books.add(Magic_Book((6300,500),ANIMATIONS['Magic_Book'],'ELIMINA EL JEFE Y LIBERA EL REINOOO!!!!'))
 
     #Bullets Group
     bullets = pygame.sprite.Group()
 
     # Hearts Group
     hearts = pygame.sprite.Group()
-    hearts.add(Heart((6200,400), './heart/potion.png'))
+    hearts.add(Heart((6200,400), 'potion.png'))
 
     #Levels Group
     active_sprite_list = pygame.sprite.Group()
@@ -54,7 +54,7 @@ def main():
     player.rect.y = constants.SCREEN_HEIGHT - player.rect.height*3 
     active_sprite_list.add(player)
 
-    healtIcon=pygame.image.load('heart.png')
+    healtIcon=pygame.image.load('img/heart.png')
     
     #FInal text
     text =''
@@ -77,7 +77,7 @@ def main():
                     player.go_right()
                 if event.key == pygame.K_UP or event.key == pygame.K_w:
                     player.jump()
-                if event.key ==pygame.K_k:
+                if event.key ==pygame.K_k or event.key ==pygame.K_SPACE:
                     player.attack()
 
             if event.type == pygame.KEYUP:
@@ -198,7 +198,7 @@ def main():
                 bosses.remove(boss)
                 gameOver=True
                 text='GANASTE!! AHORA EL REINO ESTA LIBRE DEL MAL'
-            player.healt-=0.03
+            player.healt-=0.084
 
 
         #Check if a bullet is out of screen

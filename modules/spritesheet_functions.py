@@ -3,7 +3,7 @@ This module is used to pull individual sprites from sprite sheets.
 """
 import pygame
 
-import constants
+import modules.constants as constants
 
 class SpriteSheet(object):
     """ Class used to grab images out of a sprite sheet. """
@@ -14,7 +14,7 @@ class SpriteSheet(object):
         """ Constructor. Pass in the file name of the sprite sheet. """
 
         # Load the sprite sheet.
-        self.sprite_sheet = pygame.image.load(file_name).convert()
+        self.sprite_sheet = pygame.image.load("img/"+file_name).convert()
 
 
     def get_image(self, x, y, width, height):

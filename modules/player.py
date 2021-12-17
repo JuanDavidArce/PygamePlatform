@@ -4,12 +4,12 @@ controlled sprite on the screen.
 """
 import pygame
 
-import constants
-import animations
+import modules.constants as constants
+import modules.animations as animations
 
-from platforms import MovingPlatform
-from animations import *
-from spritesheet_functions import SpriteSheet
+from modules.platforms import MovingPlatform
+from modules.animations import *
+from modules.spritesheet_functions import SpriteSheet
 
 
 
