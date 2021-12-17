@@ -84,14 +84,14 @@ def main():
             current_level.shift_world(diff)
        
 
-        # If the player gets to the end of the level, go to the next level
-        current_position = player.rect.x + current_level.world_shift
-        if current_position < current_level.level_limit:
-            player.rect.x = 120
-            if current_level_no < len(level_list)-1:
-                current_level_no += 1
-                current_level = level_list[current_level_no]
-                player.level = current_level
+        # # If the player gets to the end of the level, go to the next level
+        # current_position = player.rect.x + current_level.world_shift
+        # if current_position < current_level.level_limit:
+        #     player.rect.x = 120
+        #     if current_level_no < len(level_list)-1:
+        #         current_level_no += 1
+        #         current_level = level_list[current_level_no]
+        #         player.level = current_level
 
         #If we are attacking
         closeEnemies= pygame.sprite.spritecollide(player,current_level.enemy_list, False)
