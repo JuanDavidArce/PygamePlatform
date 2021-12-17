@@ -14,6 +14,7 @@ def getSprites(direccion,scale=2.5):
             return sprites
 
 ANIMATIONS = {
+    'Old_Guardian':getSprites('Old_Guardian'),
     'Magic_Book':getSprites('Magic_Book'),
     'Knife':getSprites('Knife'),
     'Beer':getSprites('Beer'),

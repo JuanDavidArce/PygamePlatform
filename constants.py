@@ -12,6 +12,8 @@ RED      = ( 255,   0,   0)
 SCREEN_WIDTH  = 800
 SCREEN_HEIGHT = 600
 
+
+
 import pygame
 
 def getSprites(direccion,scale=1.5):

@@ -5,6 +5,9 @@ import constants
 import levels
 from animations import *
 from player import Player
+from finalBoos import *
+from book import *
+from healt import *
 
 def main():
     """ Main Program """
@@ -28,8 +31,22 @@ def main():
     current_level_no = 0
     current_level = level_list[current_level_no]
 
+    #Bosses Group
+    bosses = pygame.sprite.Group()
+    bosses.add(FinalBoss(ANIMATIONS['Old_Guardian'],1000,6700,400))
+
+    # Books group
+    books =pygame.sprite.Group()
+    books.add(Magic_Book((300,500),ANIMATIONS['Magic_Book'],'Llega al final y derrota el jefe del mal'))
+
+    #Bullets Group
     bullets = pygame.sprite.Group()
 
+    # Hearts Group
+    hearts = pygame.sprite.Group()
+    hearts.add(Heart((6200,400), './heart/potion.png'))
+
+    #Levels Group
     active_sprite_list = pygame.sprite.Group()
     player.level = current_level
 
@@ -39,6 +56,8 @@ def main():
 
     healtIcon=pygame.image.load('heart.png')
     
+    #FInal text
+    text =''
     #Loop until the user clicks the close button.
     done = False
     gameOver= False
@@ -81,6 +100,12 @@ def main():
             current_level.shift_world(-diff)
             for bullet in bullets:
                 bullet.rect.x-=diff
+            for boss in bosses:
+                boss.rect.x-=diff
+            for book in books:
+                book.rect.x-=diff
+            for potion in hearts:
+                potion.rect.x-=diff
 
 
 
@@ -91,16 +116,13 @@ def main():
             current_level.shift_world(diff)
             for bullet in bullets:
                 bullet.rect.x+=diff
+            for boss in bosses:
+                boss.rect.x+=diff
+            for book in books:
+                book.rect.x+=diff
+            for potion in hearts:
+                potion.rect.x+=diff
        
-
-        # # If the player gets to the end of the level, go to the next level
-        # current_position = player.rect.x + current_level.world_shift
-        # if current_position < current_level.level_limit:
-        #     player.rect.x = 120
-        #     if current_level_no < len(level_list)-1:
-        #         current_level_no += 1
-        #         current_level = level_list[current_level_no]
-        #         player.level = current_level
 
         closeEnemies= pygame.sprite.spritecollide(player,current_level.enemy_list, False)
         #Update action of enemies
@@ -118,7 +140,7 @@ def main():
 
         for enemy in closeEnemies:
             enemy.action='Attack'
-            player.healt-=0.05
+            player.healt-=0.08
             enemy.velx=0
             if player.attacking:
                 enemy.healt-=1
@@ -157,12 +179,26 @@ def main():
 
         #Check if we are touching lava
                 
-        #Check if a bullet shoot me
         lavaTouching=pygame.sprite.spritecollide(player, current_level.lava_list, False)
         for lava in  lavaTouching:
             player.healt-=100
+        
+        #check if we touch a potion
+        healtTouching=pygame.sprite.spritecollide(player,hearts,True)
+        for potion in healtTouching:
+            player.healt=100
 
-            
+        
+        #Check if a final boss attack the player
+        finalBossAttack= pygame.sprite.spritecollide(player,bosses, False)
+        for boss in finalBossAttack:
+            if player.attacking:
+                boss.healt-=1
+            if boss.healt<=0:
+                bosses.remove(boss)
+                gameOver=True
+                text='GANASTE!! AHORA EL REINO ESTA LIBRE DEL MAL'
+            player.healt-=0.03
 
 
         #Check if a bullet is out of screen
@@ -170,25 +206,48 @@ def main():
             if bullet.rect.x>800 or bullet.rect.x<=0 or bullet.rect.y>600 or bullet.rect.y<=0:
                 bullets.remove(bullet)      
 
+
+        
             
         #If we have died
         if player.healt<=0:
             player.healt=0
             gameOver=True
+            text ='PERDISTE, VUELVE A INTENTARLO'
 
         # ALL CODE TO DRAW SHOULD GO BELOW THIS COMMENT
         current_level.draw(screen)
         active_sprite_list.draw(screen)
         bullets.draw(screen)
+        bosses.draw(screen)
+        books.draw(screen)
+        hearts.draw(screen)
 
         # ALL CODE TO DRAW SHOULD GO ABOVE THIS COMMENT
+        hearts.update()
         bullets.update()
+        bosses.update()
         screen.blit(healtIcon, [20,560])
+        books.update()
         myfont =pygame.font.Font('./Storytime.ttf',25)
         healt=myfont.render(str(int(player.healt)), True , constants.WHITE)
         screen.blit(healt, (50,560))
         pygame.draw.rect(screen, constants.RED, pygame.Rect(20, 550, player.healt, 10))
+        
+        if not gameOver:
+            for boss in bosses:
+                bossAux=boss
+            pygame.draw.rect(screen, constants.RED, pygame.Rect(bossAux.rect.x, bossAux.rect.y, bossAux.healt//10, 10))
 
+
+
+
+        # Check if we are touching a book
+        ls_col=pygame.sprite.spritecollide(player, books, False)
+        for book in ls_col:
+            myfont =pygame.font.Font('./Storytime.ttf',30)
+            txt_info=myfont.render(book.description, True , constants.WHITE)
+            screen.blit(txt_info, (5,5))
 
         # Limit to 60 frames per second
         clock.tick(60)
@@ -196,6 +255,8 @@ def main():
         # Go ahead and update the screen with what we've drawn.
         pygame.display.flip()
 
+        
+        # Check if we touch a book 
     # Be IDLE friendly. If you forget this line, the program will 'hang'
     # on exit.
 
@@ -206,7 +267,7 @@ def main():
 
         screen.fill(constants.BLACK)
         Fuente =pygame.font.Font('./Storytime.ttf',30)
-        img_texto=Fuente.render('HAS PERDIDO PERROOOOOOOOOOOOOOOOO', True, constants.WHITE)
+        img_texto=Fuente.render(text, True, constants.WHITE)
         screen.blit(img_texto,[200,300])
         pygame.display.flip()
         
