@@ -138,9 +138,13 @@ class Level_01(Level):
                 ]
 
         enemys=[
-            Enemy(ANIMATIONS['Skeleton_Enemy'],'Left','Walk',-5,0,100,False,1214,175,'Skeleton_Enemy',[1100,1214,175,175]),
-            Enemy(ANIMATIONS['Green_Enemy'],'Left','Attack',0,0,100,False,1214,175,'Green_Enemy',[1214,1214,175,175])
-
+            Enemy(ANIMATIONS['Skeleton_Enemy'],'Left','Walk',-5,0,100,False,950,300,'Skeleton_Enemy',[790,950,300,300]),
+            Enemy(ANIMATIONS['Green_Enemy'],'Left','Attack',0,0,100,False,1214,175,'Green_Enemy',[1214,1214,175,175]),
+            Enemy(ANIMATIONS['Green_Enemy'],'Left','Attack',0,0,100,False,2055,175,'Green_Enemy',[1214,1214,175,175]),
+            Enemy(ANIMATIONS['Skeleton_Enemy'],'Left','Walk',-5,0,100,False,2680,400,'Skeleton_Enemy',[2500,2680,400,400]),
+            Enemy(ANIMATIONS['Skeleton_Enemy'],'Left','Walk',-5,0,100,False,5240,100,'Skeleton_Enemy',[4850,5240,100,100]),
+            Enemy(ANIMATIONS['Skeleton_Enemy'],'Left','Walk',-5,0,100,False,4855,100,'Skeleton_Enemy',[4850,5240,100,100]),
+            Enemy(ANIMATIONS['Green_Enemy'],'Left','Attack',0,0,100,False,5900,400,'Green_Enemy',[1214,5980,175,175]),
             ]
 
         
