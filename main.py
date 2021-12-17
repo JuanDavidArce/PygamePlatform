@@ -18,6 +18,20 @@ def main():
 
     pygame.display.set_caption("Platformer with sprite sheets")
 
+    pygame.mixer.init()
+    soundBack = pygame.mixer.Sound("./sounds/background.wav")
+    soundEnd = pygame.mixer.Sound("./sounds/End.wav")
+    soundGameOver = pygame.mixer.Sound("./sounds/GameOver.wav")
+    soundHitGreen = pygame.mixer.Sound("./sounds/hit_Green.wav")
+    soundHitPrincipal = pygame.mixer.Sound("./sounds/hit_Principal.wav")
+    soundPickUpBook = pygame.mixer.Sound("./sounds/pickUpBook.wav")
+    soundPickUpHealth = pygame.mixer.Sound("./sounds/Health.wav")
+    soundBoss = pygame.mixer.Sound("./sounds/boss.wav")
+
+
+
+    pygame.mixer.Sound.play(soundBack, -1)
+
     # Create the player
     player = Player()
 
@@ -78,6 +92,7 @@ def main():
                 if event.key == pygame.K_UP or event.key == pygame.K_w:
                     player.jump()
                 if event.key ==pygame.K_k or event.key ==pygame.K_SPACE:
+                    pygame.mixer.Sound.play(soundHitPrincipal)
                     player.attack()
 
             if event.type == pygame.KEYUP:
@@ -139,7 +154,11 @@ def main():
         #If we are attacking
 
         for enemy in closeEnemies:
+            
             enemy.action='Attack'
+            if enemy.actualPositionOfAnimation == 0 and enemy.counter == 1 and enemy.name == "Skeleton_Enemy":
+                pygame.mixer.Sound.play(soundHitPrincipal)
+           
             player.healt-=0.08
             enemy.velx=0
             if player.attacking:
@@ -148,11 +167,14 @@ def main():
                 current_level.enemy_list.remove(enemy)
         
         for enemy in current_level.enemy_list:
+            
             if enemy.name=='Green_Enemy':
                 if enemy.actualPositionOfAnimation ==10 or enemy.actualPositionOfAnimation==15:
                     enemy.isAttacking=True
+                   
         
                 if enemy.isAttacking and enemy.action=='Attack':
+                    
                     velxBullet =0
                     velyBullet=0
                     #Right
@@ -165,9 +187,12 @@ def main():
                         pos=[enemy.rect.x  , enemy.rect.bottom-50]
                         velxBullet=-5
                         
+                        
 
                     bullet=Bullet(pos,velxBullet,velyBullet) # WE CAN CONTROL THE DIRECTON WITH THE SECOND PARAMETER
                     bullets.add(bullet)
+                    if bullet.rect.x<=800 and bullet.rect.x>=0 and bullet.rect.y<=600 and bullet.rect.y>=0:
+                        pygame.mixer.Sound.play(soundHitGreen)
                     enemy.isAttacking=False
 
         
@@ -187,6 +212,8 @@ def main():
         healtTouching=pygame.sprite.spritecollide(player,hearts,True)
         for potion in healtTouching:
             player.healt=100
+            pygame.mixer.Sound.play(soundPickUpHealth)
+            pygame.mixer.Sound.play(soundBoss, -1)
 
         
         #Check if a final boss attack the player
@@ -198,6 +225,9 @@ def main():
                 bosses.remove(boss)
                 gameOver=True
                 text='GANASTE!! AHORA EL REINO ESTA LIBRE DEL MAL'
+                soundBack.stop()
+                soundBoss.stop()
+                pygame.mixer.Sound.play(soundEnd)
             player.healt-=0.084
 
 
@@ -214,6 +244,9 @@ def main():
             player.healt=0
             gameOver=True
             text ='PERDISTE, VUELVE A INTENTARLO'
+            soundBack.stop()
+            soundBoss.stop()
+            pygame.mixer.Sound.play(soundGameOver)
 
         # ALL CODE TO DRAW SHOULD GO BELOW THIS COMMENT
         current_level.draw(screen)
@@ -248,6 +281,8 @@ def main():
             myfont =pygame.font.Font('./Storytime.ttf',30)
             txt_info=myfont.render(book.description, True , constants.WHITE)
             screen.blit(txt_info, (5,5))
+            if book.actualPositionOfAnimation == 0:
+                pygame.mixer.Sound.play(soundPickUpBook)
 
         # Limit to 60 frames per second
         clock.tick(60)
