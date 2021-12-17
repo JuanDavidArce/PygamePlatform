@@ -79,6 +79,8 @@ def main():
             diff = player.rect.x - 500
             player.rect.x = 500
             current_level.shift_world(-diff)
+            for bullet in bullets:
+                bullet.rect.x-=diff
 
 
 
@@ -87,6 +89,8 @@ def main():
             diff = 120 - player.rect.x
             player.rect.x = 120
             current_level.shift_world(diff)
+            for bullet in bullets:
+                bullet.rect.x+=diff
        
 
         # # If the player gets to the end of the level, go to the next level
@@ -150,6 +154,15 @@ def main():
         for bullet in  bulletsHitting:
             player.healt-=1
             bullets.remove(bullet)
+
+        #Check if we are touching lava
+                
+        #Check if a bullet shoot me
+        lavaTouching=pygame.sprite.spritecollide(player, current_level.lava_list, False)
+        for lava in  lavaTouching:
+            player.healt-=100
+
+            
 
 
         #Check if a bullet is out of screen

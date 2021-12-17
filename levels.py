@@ -27,7 +27,7 @@ class Level():
             collide with the player. """
         self.platform_list = pygame.sprite.Group()
         self.enemy_list = pygame.sprite.Group()
-        self.doNotTouch = pygame.sprite.Group()
+        self.lava_list = pygame.sprite.Group()
         self.player = player
 
     # Update everythign on this level
@@ -35,6 +35,7 @@ class Level():
         """ Update everything in this level."""
         self.platform_list.update()
         self.enemy_list.update()
+        self.lava_list.update()
 
     def draw(self, screen):
         """ Draw everything on this level. """
@@ -48,6 +49,7 @@ class Level():
         # Draw all the sprite lists that we have
         self.platform_list.draw(screen)
         self.enemy_list.draw(screen)
+        self.lava_list.draw(screen)
 
     def shift_world(self, shift_x):
         """ When the user moves left/right and we need to scroll everything: """
@@ -58,6 +60,9 @@ class Level():
         # Go through all the sprite lists and shift
         for platform in self.platform_list:
             platform.rect.x += shift_x
+        for lava in self.lava_list:
+            lava.rect.x += shift_x
+
 
         for enemy in self.enemy_list:
             enemy.rect.x += shift_x
@@ -79,16 +84,16 @@ class Level_01(Level):
         self.level_limit = -2500
 
         # Array with type of platform, and x, y location of the platform.
+        lava = []
         base = []
-
         for i in range(0,11):
             base.append([platforms.STONE_PLATFORM_LEFT, 0+i*70, constants.SCREEN_HEIGHT - 40])
         
         for i in range(11, 40):
-            base.append([platforms.lava, 20+i*68, constants.SCREEN_HEIGHT - 40])
+            lava.append([platforms.lava, 20+i*68, constants.SCREEN_HEIGHT - 40])
         
         for i in range(43, 90):
-            base.append([platforms.lava, 20+i*68, constants.SCREEN_HEIGHT - 40])
+            lava.append([platforms.lava, 20+i*68, constants.SCREEN_HEIGHT - 40])
 
         for i in range(37,44):
             base.append([platforms.STONE_PLATFORM_LEFT, 0+i*70, constants.SCREEN_HEIGHT - 40])
@@ -141,8 +146,9 @@ class Level_01(Level):
             Enemy(ANIMATIONS['Skeleton_Enemy'],'Left','Walk',-5,0,100,False,4855,100,'Skeleton_Enemy',[4850,5240,100,100]),
             Enemy(ANIMATIONS['Green_Enemy'],'Left','Attack',0,0,100,False,5900,400,'Green_Enemy',[1214,5980,175,175]),
             ]
-        level = base + level
 
+        
+        level = base+level
 
         # Go through the array above and add platforms
         for platform in level:
@@ -151,6 +157,14 @@ class Level_01(Level):
             block.rect.y = platform[2]
             block.player = self.player
             self.platform_list.add(block)
+
+        for platform in lava:
+            block = platforms.Platform(platform[0])
+            block.rect.x = platform[1]
+            block.rect.y = platform[2]
+            block.player = self.player
+            self.lava_list.add(block)
+
         for enemy in enemys:
             self.enemy_list.add(enemy)
 
