@@ -84,8 +84,21 @@ class Level_01(Level):
         for i in range(0,11):
             base.append([platforms.STONE_PLATFORM_LEFT, 0+i*70, constants.SCREEN_HEIGHT - 40])
         
-        for i in range(11, 30):
-            base.append([platforms.lava, 0+i*68, constants.SCREEN_HEIGHT - 40])
+        for i in range(11, 40):
+            base.append([platforms.lava, 20+i*68, constants.SCREEN_HEIGHT - 40])
+        
+        for i in range(43, 90):
+            base.append([platforms.lava, 20+i*68, constants.SCREEN_HEIGHT - 40])
+
+        for i in range(37,44):
+            base.append([platforms.STONE_PLATFORM_LEFT, 0+i*70, constants.SCREEN_HEIGHT - 40])
+        
+        for i in range(70,76):
+            base.append([platforms.STONE_PLATFORM_LEFT, 0+i*70, 200])
+
+        for i in range(87,100):
+            base.append([platforms.STONE_PLATFORM_LEFT, 0+i*70, constants.SCREEN_HEIGHT - 40])
+        
 
     
         level = [ 
@@ -97,7 +110,26 @@ class Level_01(Level):
                   [platforms.STONE_PLATFORM_RIGHT, 940, 400],
                   [platforms.STONE_PLATFORM_LEFT, 1120, 280],
                   [platforms.STONE_PLATFORM_MIDDLE, 1190, 280],
-                  [platforms.STONE_PLATFORM_MIDDLE, 1260, 280],
+                  [platforms.STONE_PLATFORM_RIGHT, 1260, 280],
+                  [platforms.STONE_PLATFORM_LEFT, 1920, 280],
+                  [platforms.STONE_PLATFORM_MIDDLE, 1990, 280],
+                  [platforms.STONE_PLATFORM_RIGHT, 2060, 280],
+                  [platforms.STONE_PLATFORM_LEFT, 2240, 400],
+                  [platforms.STONE_PLATFORM_MIDDLE, 2310, 400],
+                  [platforms.STONE_PLATFORM_RIGHT, 2380, 400],
+                  [platforms.STONE_PLATFORM_LEFT, 2540, 500],
+                  [platforms.STONE_PLATFORM_MIDDLE, 2610, 500],
+                  [platforms.STONE_PLATFORM_RIGHT, 2680, 500],
+                  [platforms.STONE_PLATFORM_MIDDLE, 3350, 200],
+                  [platforms.STONE_PLATFORM_MIDDLE, 3600, 400],
+                  [platforms.STONE_PLATFORM_MIDDLE, 4400, 400],
+                  [platforms.STONE_PLATFORM_MIDDLE, 4400, 400],
+                  [platforms.STONE_PLATFORM_LEFT, 5400, 300],
+                  [platforms.STONE_PLATFORM_MIDDLE, 5470, 300],
+                  [platforms.STONE_PLATFORM_RIGHT, 5540, 300],
+                  [platforms.STONE_PLATFORM_LEFT, 5800, 500],
+                  [platforms.STONE_PLATFORM_MIDDLE, 5870, 500],
+                  [platforms.STONE_PLATFORM_RIGHT, 5940, 500],
                 ]
 
         enemys=[
@@ -132,3 +164,33 @@ class Level_01(Level):
         self.platform_list.add(block)
 
 
+        block = platforms.MovingPlatform(platforms.STONE_PLATFORM_MIDDLE)
+        block.rect.x = 3000
+        block.rect.y = 280
+        block.boundary_top = 100
+        block.boundary_bottom = 450
+        block.change_y = -1
+        block.player = self.player
+        block.level = self
+        self.platform_list.add(block)
+
+
+        block = platforms.MovingPlatform(platforms.STONE_PLATFORM_MIDDLE)
+        block.rect.x = 3900
+        block.rect.y = 450
+        block.boundary_left = 3900
+        block.boundary_right = 4200
+        block.change_x = 1
+        block.player = self.player
+        block.level = self
+        self.platform_list.add(block)
+
+        block = platforms.MovingPlatform(platforms.STONE_PLATFORM_MIDDLE)
+        block.rect.x = 4600
+        block.rect.y = 280
+        block.boundary_top = 100
+        block.boundary_bottom = 450
+        block.change_y = -1
+        block.player = self.player
+        block.level = self
+        self.platform_list.add(block)
